@@ -3,8 +3,8 @@
 
 Inputs : assets/source/model-frames/m000.png ...  sway turntable of assets/hero/womanfinal.glb,
          rendered by scripts/model (see scripts/model/README.md)
-Outputs: assets/hero/hero-3d-v5.webp         - loops: model sways, portfolio bubble pulses
-         assets/hero/hero-3d-v5-static.png  - first frame, used for reduced-motion / fallback
+Outputs: assets/hero/hero-3d-v6.webp         - loops: model sways, portfolio bubble pulses
+         assets/hero/hero-3d-v6-static.png  - first frame, used for reduced-motion / fallback
 
 Requires: Python 3.10+, Pillow, numpy.
 Run from the repository root:  python3 scripts/build_hero.py
@@ -30,7 +30,6 @@ BTN_TRACKING = 2.4
 BTN_X, BTN_Y = 72, 410
 MODEL_W, MODEL_H = 300, 430
 MODEL_X, MODEL_Y = 870, 90  # top-left of the model render, centred in the arch
-URL_LABEL = "bhavna-j.vercel.app"
 TOP_LEFT = "~/bhavna-jayakumar"
 TOP_RIGHT = "[ ai · ml · web · design ]"
 KICKER = "// hello, world — i'm"
@@ -183,7 +182,7 @@ def draw_button(k: float):
     bw, bh = button_geometry()
     pad = 70
     ox, oy = BTN_X - pad, BTN_Y - pad
-    tw_, th_ = bw + 2 * pad + 230, bh + 2 * pad
+    tw_, th_ = bw + 2 * pad, bh + 2 * pad
     tile = Image.new("RGBA", (tw_, th_), (0, 0, 0, 0))
     bx, by = pad, pad
     pulse = 0.5 + 0.5 * math.sin(2 * math.pi * k)
@@ -221,8 +220,6 @@ def draw_button(k: float):
         sh.putalpha(ImageChops.multiply(sh.getchannel("A"), clip))
         body.alpha_composite(sh)
     tile.alpha_composite(body)
-    ImageDraw.Draw(tile).text((bx + bw + 24, by + bh / 2), URL_LABEL, font=F_MONO(13),
-                              fill=MUTED + (255,), anchor="lm")
     return tile, (ox, oy)
 
 
@@ -251,11 +248,11 @@ def main():
     models = load_model_frames()
     n = len(models)
     frames = [frame(i, n, base, models) for i in range(n)]
-    frames[0].save(OUT / "hero-3d-v5-static.png", optimize=True)
+    frames[0].save(OUT / "hero-3d-v6-static.png", optimize=True)
     # Animated WebP keeps full 24-bit colour (a GIF would squeeze the model into 256 colours).
-    frames[0].save(OUT / "hero-3d-v5.webp", save_all=True, append_images=frames[1:],
+    frames[0].save(OUT / "hero-3d-v6.webp", save_all=True, append_images=frames[1:],
                    duration=round(1000 / FPS), loop=0, lossless=True, quality=90, method=4)
-    for f in ("hero-3d-v5.webp", "hero-3d-v5-static.png"):
+    for f in ("hero-3d-v6.webp", "hero-3d-v6-static.png"):
         print(f, round((OUT / f).stat().st_size / 1024), "KB")
 
 
