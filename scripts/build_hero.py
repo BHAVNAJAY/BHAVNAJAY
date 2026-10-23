@@ -3,8 +3,8 @@
 
 Inputs : assets/source/model-frames/m000.png ...  sway turntable of assets/hero/womanfinal.glb,
          rendered by scripts/model (see scripts/model/README.md)
-Outputs: assets/hero/hero-3d-v4.webp         - loops: model sways, portfolio bubble pulses
-         assets/hero/hero-3d-v4-static.png  - first frame, used for reduced-motion / fallback
+Outputs: assets/hero/hero-3d-v5.webp         - loops: model sways, portfolio bubble pulses
+         assets/hero/hero-3d-v5-static.png  - first frame, used for reduced-motion / fallback
 
 Requires: Python 3.10+, Pillow, numpy.
 Run from the repository root:  python3 scripts/build_hero.py
@@ -49,6 +49,7 @@ def font(name: str, size: float) -> ImageFont.FreeTypeFont:
     return ImageFont.truetype(str(FONTS / name), int(round(size)))
 
 
+F_DISPLAY = lambda s: font("Poppins-ExtraBold.ttf", s)
 F_SERIF = lambda s: font("InstrumentSerif-Regular.ttf", s)
 F_SERIF_I = lambda s: font("InstrumentSerif-Italic.ttf", s)
 F_MONO = lambda s: font("JetBrainsMono-Regular.ttf", s)
@@ -170,10 +171,10 @@ def build_static_text():
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     d = ImageDraw.Draw(layer)
     d.text((X, y), KICKER, font=F_MONO(15), fill=VIOLET + (255,))
-    name_size = 124
-    y_n1 = y + 18
-    d.text((X - 4, y_n1), NAME_1, font=F_SERIF(name_size), fill=TEXT + (255,))
-    gradient_text(layer, (X - 2, y_n1 + 104), NAME_2, F_SERIF_I(name_size))
+    name_size = 96
+    y_n1 = y + 22
+    gradient_text(layer, (X - 4, y_n1), NAME_1, F_DISPLAY(name_size))
+    d.text((X - 4, y_n1 + 96), NAME_2, font=F_DISPLAY(name_size), fill=TEXT + (255,))
     return layer
 
 
@@ -250,11 +251,11 @@ def main():
     models = load_model_frames()
     n = len(models)
     frames = [frame(i, n, base, models) for i in range(n)]
-    frames[0].save(OUT / "hero-3d-v4-static.png", optimize=True)
+    frames[0].save(OUT / "hero-3d-v5-static.png", optimize=True)
     # Animated WebP keeps full 24-bit colour (a GIF would squeeze the model into 256 colours).
-    frames[0].save(OUT / "hero-3d-v4.webp", save_all=True, append_images=frames[1:],
+    frames[0].save(OUT / "hero-3d-v5.webp", save_all=True, append_images=frames[1:],
                    duration=round(1000 / FPS), loop=0, lossless=True, quality=90, method=4)
-    for f in ("hero-3d-v4.webp", "hero-3d-v4-static.png"):
+    for f in ("hero-3d-v5.webp", "hero-3d-v5-static.png"):
         print(f, round((OUT / f).stat().st_size / 1024), "KB")
 
 
