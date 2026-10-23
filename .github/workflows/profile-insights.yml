@@ -3,7 +3,7 @@
 #   profile/stats.svg                         – GitHub stats card
 #   profile/top-langs.svg                     – most-used languages (public repos)
 #   profile/streak.svg                        – contribution streak
-# Uses only the automatic GITHUB_TOKEN (public data). No personal secrets are stored here.
+# Uses the PROFILE_PAT secret when it exists (private contributions included), otherwise the automatic GITHUB_TOKEN (public data only).
 
 name: Profile insights
 
@@ -37,7 +37,7 @@ jobs:
         continue-on-error: true
         uses: yoshi389111/github-profile-3d-contrib@v0.9.3
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PROFILE_PAT || secrets.GITHUB_TOKEN }}
           USERNAME: ${{ github.repository_owner }}
           SETTING_JSON: .github/profile-3d-settings.json
 
@@ -48,7 +48,7 @@ jobs:
           card: stats
           options: "username=${{ github.repository_owner }}&show_icons=true&hide_rank=true&card_width=420&custom_title=GitHub%20Stats&bg_color=0B0A0F&title_color=F4F1F8&text_color=B9B3C6&icon_color=A78BFA&hide_border=true&border_radius=16"
           path: profile/stats.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PROFILE_PAT || secrets.GITHUB_TOKEN }}
           fail_on_error: "true" # keep the last good card instead of writing an error card
 
       - name: Top languages card
@@ -58,7 +58,7 @@ jobs:
           card: top-langs
           options: "username=${{ github.repository_owner }}&layout=compact&langs_count=8&size_weight=0.5&count_weight=0.5&card_width=420&custom_title=Most%20Used%20Languages&bg_color=0B0A0F&title_color=F4F1F8&text_color=B9B3C6&hide_border=true&border_radius=16"
           path: profile/top-langs.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PROFILE_PAT || secrets.GITHUB_TOKEN }}
           fail_on_error: "true"
 
       - name: Streak card
@@ -67,7 +67,7 @@ jobs:
         with:
           options: "user=${{ github.repository_owner }}&background=0B0A0F&hide_border=true&border_radius=16&stroke=2A2533&ring=A78BFA&fire=F0A6CA&currStreakNum=F4F1F8&sideNums=F4F1F8&currStreakLabel=A78BFA&sideLabels=B9B3C6&dates=8E879C&timezone=Asia/Kolkata"
           path: profile/streak.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PROFILE_PAT || secrets.GITHUB_TOKEN }}
 
       - name: Put the streak card inside the 3D calendar
         continue-on-error: true
