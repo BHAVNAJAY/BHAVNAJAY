@@ -1,8 +1,8 @@
 <!-- ───────────────────────────── hero ───────────────────────────── -->
 <a href="https://bhavna-j.vercel.app/">
   <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/BHAVNAJAY/BHAVNAJAY/main/assets/hero/hero-static.png">
-    <img src="assets/hero/hero.gif" width="100%" alt="BHAVNA JAYAKUMAR. A 3D avatar beside a View Portfolio button.">
+    <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/BHAVNAJAY/BHAVNAJAY/main/assets/hero/hero-3d-static.png">
+    <img src="assets/hero/hero-3d.gif" width="100%" alt="BHAVNA JAYAKUMAR. A 3D avatar beside a View Portfolio button.">
   </picture>
 </a>
 

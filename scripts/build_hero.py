@@ -3,8 +3,8 @@
 
 Inputs : assets/source/model-frames/m000.png ...  sway turntable of assets/hero/womanfinal.glb,
          rendered by scripts/model (see scripts/model/README.md)
-Outputs: assets/hero/hero.gif         - loops: model sways, portfolio bubble pulses
-         assets/hero/hero-static.png  - first frame, used for reduced-motion / fallback
+Outputs: assets/hero/hero-3d.gif         - loops: model sways, portfolio bubble pulses
+         assets/hero/hero-3d-static.png  - first frame, used for reduced-motion / fallback
 
 Requires: Python 3.10+, Pillow, numpy.
 Run from the repository root:  python3 scripts/build_hero.py
@@ -252,13 +252,13 @@ def main():
     models = load_model_frames()
     n = len(models)
     frames = [frame(i, n, base, models) for i in range(n)]
-    frames[0].save(OUT / "hero-static.png", optimize=True)
+    frames[0].save(OUT / "hero-3d-static.png", optimize=True)
     # one shared palette keeps the GIF small; Pillow stores only the changed rectangle per frame
     pal = frames[n // 4].quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
     q = [f.quantize(palette=pal, dither=Image.Dither.NONE) for f in frames]
-    q[0].save(OUT / "hero.gif", save_all=True, append_images=q[1:], duration=round(1000 / FPS),
+    q[0].save(OUT / "hero-3d.gif", save_all=True, append_images=q[1:], duration=round(1000 / FPS),
               loop=0, optimize=True)
-    for f in ("hero.gif", "hero-static.png"):
+    for f in ("hero-3d.gif", "hero-3d-static.png"):
         print(f, round((OUT / f).stat().st_size / 1024), "KB")
 
 
