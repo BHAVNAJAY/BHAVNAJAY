@@ -402,8 +402,6 @@ def main():
     for cat, items in SKILLS.items():
         for label, icon in items:
             write(ASSETS / "skills" / f"{slugify(label)}.svg", pill(label, icon, cat)); n += 1
-    for i, p in enumerate(PROJECTS, 1):
-        write(ASSETS / "projects" / f"{p[0]}.svg", project_card(i, *p)); n += 1
     for slug, svg in achievement_cards().items():
         write(ASSETS / "achievements" / f"{slug}.svg", svg); n += 1
     for slug, side, label, logo in CONTACT:

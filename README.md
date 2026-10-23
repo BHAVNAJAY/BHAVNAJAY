@@ -66,13 +66,10 @@
 ### `/ projects`
 
 <p align="center">
-  <a href="https://github.com/BHAVNAJAY/SatQueryAI"><img src="assets/projects/satquery-ai.svg" alt="SatQuery AI — AI-Powered Earth Observation. Repository: github.com/BHAVNAJAY/SatQueryAI. Live demo: not listed."></a>
-  <a href="https://ping-ecru-nu.vercel.app/"><img src="assets/projects/ping.svg" alt="Ping — Intelligent Campaign Automation. Live demo: ping-ecru-nu.vercel.app. Repository: not listed."></a>
-  <a href="https://i-ready-alpha.vercel.app/"><img src="assets/projects/iready.svg" alt="iReady — AI-Powered Interview Preparation. Live demo: i-ready-alpha.vercel.app. Repository: not listed."></a>
-  <a href="https://github.com/BHAVNAJAY/Netra"><img src="assets/projects/netra.svg" alt="Netra — Intelligent Healthcare Operations. Repository: github.com/BHAVNAJAY/Netra. Live demo: not listed."></a>
-  <a href="https://github.com/BHAVNAJAY/Eco-Learn"><img src="assets/projects/ecolearn.svg" alt="EcoLearn — Gamified Sustainability Education. Repository: github.com/BHAVNAJAY/Eco-Learn. Live demo: not listed."></a>
-  <a href="https://notify-yh0m.onrender.com/"><img src="assets/projects/notify.svg" alt="Notify — Secure Notes &amp; Organization. Live demo: notify-yh0m.onrender.com. Repository: not listed."></a>
+  <img src="assets/projects/projects-flow.webp" width="100%" alt="Projects: SatQuery AI, Ping, iReady, Netra, EcoLearn and Notify, scrolling past on a curved strip">
 </p>
+
+<p align="center"><sub><a href="https://github.com/BHAVNAJAY/SatQueryAI">SatQuery AI</a> · <a href="https://ping-ecru-nu.vercel.app/">Ping</a> · <a href="https://i-ready-alpha.vercel.app/">iReady</a> · <a href="https://github.com/BHAVNAJAY/Netra">Netra</a> · <a href="https://github.com/BHAVNAJAY/Eco-Learn">EcoLearn</a> · <a href="https://notify-yh0m.onrender.com/">Notify</a></sub></p>
 
 <br>
 
