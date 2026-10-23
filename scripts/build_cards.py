@@ -71,9 +71,6 @@ ACHIEVEMENTS = [
     ("sih-2025-winner", "Smart India Hackathon 2025", "WINNER",
      "Built a SaaS platform solution for the Government of Punjab addressing real-world "
      "administrative workflows."),
-    ("sih-2025-internal", "Smart India Hackathon 2025", "INTERNAL HACKATHON WINNER",
-     "Developed a SaaS platform concept addressing government administrative workflows and "
-     "real-world public-sector challenges in Punjab."),
     ("nxtgen-runner-up", "NxtGen Hackathon", "RUNNER-UP",
      "Built Netra, an intelligent hospital operations platform designed to improve patient flow, "
      "anticipate resource requirements, and support healthcare capacity planning."),
@@ -248,6 +245,9 @@ def pill_light(label: str, icon: str | None, category: str) -> str:
     """White bubble, large brand logo, small black label (development tools)."""
     size, key = 13, "sans-m"
     pad_l, icon_sz, gap, pad_r = 11, 26, 10, 18
+    text_only = icon is None and category == "ai-ml"  # no logo: just the name in the bubble
+    if text_only:
+        pad_l, icon_sz, gap, pad_r = 20, 0, 0, 20
     tw = text_w(label, key, size)
     pw = pad_l + icon_sz + gap + tw + pad_r
     W, H, top, ph = pw + 8, 52, 4, 44
@@ -256,7 +256,9 @@ def pill_light(label: str, icon: str | None, category: str) -> str:
           f'fill="#FFFFFF" stroke="#D9D6E0"/>')
     iy = top + (ph - icon_sz) / 2
     s = icon_sz / 24
-    if icon:
+    if text_only:
+        pass
+    elif icon:
         d.raw(f'<g transform="translate({pad_l},{iy}) scale({s})"><path fill="#{brand_hex(icon)}" d="{icon_path(icon)}"/></g>')
     else:
         g = GLYPHS[category].format(c="#5B3FD1")

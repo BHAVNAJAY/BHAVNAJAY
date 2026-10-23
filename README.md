@@ -56,7 +56,6 @@
 
 <p align="center">
   <img src="assets/achievements/sih-2025-winner.svg" alt="Smart India Hackathon 2025 — Winner. Built a SaaS platform solution for the Government of Punjab addressing real-world administrative workflows.">
-  <img src="assets/achievements/sih-2025-internal.svg" alt="Smart India Hackathon 2025 — Internal Hackathon Winner. Developed a SaaS platform concept addressing government administrative workflows and real-world public-sector challenges in Punjab.">
   <img src="assets/achievements/nxtgen-runner-up.svg" alt="NxtGen Hackathon — Runner-Up. Built Netra, an intelligent hospital operations platform designed to improve patient flow, anticipate resource requirements, and support healthcare capacity planning.">
   <img src="assets/achievements/finan-performance-award.svg" alt="Performance Excellence Award — Finan Consulting. Recognised for performance, ownership, and contributions to SaaS product development during my full-stack development internship.">
   <img src="assets/achievements/hackverse-25.svg" alt="HackVerse’25 — Organiser &amp; Designer. Organised and designed for a national-level Web3 × AI hackathon, coordinating event execution and creative deliverables for an event with 200+ participants.">
@@ -107,19 +106,15 @@
 ### `/ github-insights`
 
 <p align="center">
-  <img src="profile/stats.svg" alt="GitHub stats for BHAVNAJAY">
-  <img src="profile/top-langs.svg" alt="Most used languages across BHAVNAJAY's public repositories">
-</p>
-
-<p align="center">
-  <img src="profile/streak.svg" alt="GitHub contribution streak for BHAVNAJAY">
+  <img src="profile/stats.svg" width="49%" alt="GitHub stats for BHAVNAJAY">
+  <img src="profile/top-langs.svg" width="49%" alt="Most used languages across BHAVNAJAY's public repositories">
 </p>
 
 <p align="center">
   <img src="profile-3d-contrib/profile-3d-bhavna.svg" width="100%" alt="3D contribution calendar for BHAVNAJAY">
 </p>
 
-<sub>Language share is based on code detected in public repositories — it is not a measure of proficiency. Stats, streak and the 3D calendar are regenerated daily by a GitHub Action.</sub>
+<sub>Language share is based on code detected in public repositories — it is not a measure of proficiency. Stats, streak and the 3D calendar (which includes the streak card) are regenerated daily by a GitHub Action.</sub>
 
 <br><br>
 

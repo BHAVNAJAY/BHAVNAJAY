@@ -16,6 +16,7 @@ on:
     paths:
       - ".github/workflows/profile-insights.yml"
       - ".github/profile-3d-settings.json"
+      - "scripts/compose_3d_streak.py"
 
 permissions:
   contents: write # needed to commit the regenerated SVGs back to this repo
@@ -67,6 +68,10 @@ jobs:
           options: "user=${{ github.repository_owner }}&background=0B0A0F&hide_border=true&border_radius=16&stroke=2A2533&ring=A78BFA&fire=F0A6CA&currStreakNum=F4F1F8&sideNums=F4F1F8&currStreakLabel=A78BFA&sideLabels=B9B3C6&dates=8E879C&timezone=Asia/Kolkata"
           path: profile/streak.svg
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Put the streak card inside the 3D calendar
+        continue-on-error: true
+        run: python3 scripts/compose_3d_streak.py
 
       - name: Commit generated images
         run: |
