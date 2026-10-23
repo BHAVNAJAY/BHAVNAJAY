@@ -3,9 +3,9 @@
   "fileName": "profile-3d-bhavna.svg",
   "backgroundColor": "#0B0A0F",
   "foregroundColor": "#F4F1F8",
-  "strongColor": "#F0A6CA",
+  "strongColor": "#39D353",
   "weakColor": "#8E879C",
-  "radarColor": "#A78BFA",
+  "radarColor": "#26A641",
   "growingAnimation": true,
-  "contribColors": ["#2E2A44", "#5B3FD1", "#8B6CF0", "#B79CFF", "#F0A6CA"]
+  "contribColors": ["#1C222B", "#0E4429", "#006D32", "#26A641", "#39D353"]
 }

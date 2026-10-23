@@ -80,9 +80,6 @@ ACHIEVEMENTS = [
     ("hackverse-25", "HackVerse’25", "ORGANISER & DESIGNER",
      "Organised and designed for a national-level Web3 × AI hackathon, coordinating event "
      "execution and creative deliverables for an event with 200+ participants."),
-    ("project-day-2024", "Project Day 2024", "WINNER",
-     "Designed a wireless communication system using LED light waves to demonstrate secure, "
-     "high-speed data transmission."),
 ]
 
 CONTACT = [  # (file, side, text shown, logo)
