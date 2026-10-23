@@ -342,24 +342,28 @@ def project_card(i, slug, title, short, hue, stack, repo, demo) -> str:
 
 # =============================================================== achievement card
 def achievement_cards() -> dict[str, str]:
-    W = 400
-    lines_all = [wrap(desc, "sans", 13, W - 48) for *_, desc in ACHIEVEMENTS]
+    """Wide horizontal cards, one per row: tag + title on the left, description on the right."""
+    W, LEFT_W, DESC_X = 800, 290, 340
+    lines_all = [wrap(desc, "sans", 13.5, W - DESC_X - 28) for *_, desc in ACHIEVEMENTS]
     n = max(len(l) for l in lines_all)
-    H = 112 + n * 20 + 14
+    H = max(144, n * 21 + 64)
     out = {}
     for idx, ((slug, title, tag, desc), lines) in enumerate(zip(ACHIEVEMENTS, lines_all), 1):
         d = Doc(W, H, f"{title} — {tag.title()}: {desc}")
         d.pad_bottom = 10
         d.defs.append('<linearGradient id="t" x1="0" x2="1"><stop offset="0" stop-color="#A78BFA"/><stop offset="1" stop-color="#F0A6CA"/></linearGradient>')
         d.raw(f'<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="17.5" fill="{BG_CARD}" stroke="{STROKE}"/>')
-        d.raw(f'<rect x="24" y="0" width="56" height="2" fill="url(#t)"/>')
+        d.raw('<rect x="24" y="0" width="56" height="2" fill="url(#t)"/>')
         tw = text_w(tag, "mono-m", 10, tracking=1.1) + 22
         d.raw(f'<rect x="24" y="24" width="{tw:.1f}" height="22" rx="11" fill="{PINK}" fill-opacity=".10" stroke="{PINK}" stroke-opacity=".40"/>')
         d.text(35, 39, tag, "mono-m", 10, PINK, tracking=1.1)
+        for j, ln in enumerate(wrap(title, "serif", 27, LEFT_W - 24)):
+            d.text(23, 82 + j * 30, ln, "serif", 27, TEXT)
+        d.raw(f'<line x1="{DESC_X - 24}" y1="24" x2="{DESC_X - 24}" y2="{H - 24}" stroke="{STROKE}"/>')
         d.text(W - 24, 39, f"A.{idx:02d}", "mono", 11, MUTED, anchor="end")
-        d.text(23, 86, title, "serif", 29, TEXT)
+        y0 = max(62, (H - len(lines) * 21) / 2 + 12)
         for j, ln in enumerate(lines):
-            d.text(24, 112 + j * 20, ln, "sans", 13, "#B9B3C6")
+            d.text(DESC_X, y0 + j * 21, ln, "sans", 13.5, "#B9B3C6")
         out[slug] = d.render()
     return out
 
