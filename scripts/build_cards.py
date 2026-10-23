@@ -269,7 +269,7 @@ def pill_light(label: str, icon: str | None, category: str) -> str:
 
 
 def pill(label: str, icon: str | None, category: str) -> str:
-    if category == "development":
+    if category in ("development", "ai-ml"):
         return pill_light(label, icon, category)
     size, key = 13.5, "sans-m"
     pad_l, icon_sz, gap, pad_r = 13, 16, 9, 15
@@ -292,35 +292,34 @@ def pill(label: str, icon: str | None, category: str) -> str:
 
 
 # =============================================================== project card
+def backdrop_uri(slug: str) -> str:
+    data = (ASSETS / "source" / "backdrops" / f"{slug}.jpg").read_bytes()
+    return "data:image/jpeg;base64," + base64.b64encode(data).decode()
+
+
 def project_card(i, slug, title, short, hue, stack, repo, demo) -> str:
-    W, H = 400, 214
+    """Backdrop image on top, details panel below (the images carry their own artwork/titles)."""
+    W, IMG_H, PANEL = 400, 220, 160
+    H = IMG_H + PANEL
     acc = hsl(hue, 0.78, 0.66)
-    acc2 = hsl((hue + 40) % 360, 0.70, 0.62)
     d = Doc(W, H, f"{title} — {short}")
     d.pad_bottom = 10
     d.defs.append(f'<clipPath id="c"><rect width="{W}" height="{H}" rx="18"/></clipPath>')
-    d.defs.append(f'<radialGradient id="g" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="{acc}" stop-opacity=".42"/>'
-                  f'<stop offset="1" stop-color="{acc}" stop-opacity="0"/></radialGradient>')
-    d.defs.append(f'<radialGradient id="g2" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="{acc2}" stop-opacity=".22"/>'
-                  f'<stop offset="1" stop-color="{acc2}" stop-opacity="0"/></radialGradient>')
     d.raw(f'<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="17.5" fill="{BG_CARD}"/>')
-    d.raw('<g clip-path="url(#c)">'
-          f'<circle cx="372" cy="-6" r="150" fill="url(#g)"/>'
-          f'<circle cx="300" cy="70" r="90" fill="url(#g2)"/>'
-          f'<circle cx="372" cy="-6" r="74" fill="none" stroke="{acc}" stroke-opacity=".28"/>'
-          f'<circle cx="372" cy="-6" r="112" fill="none" stroke="{acc}" stroke-opacity=".14"/>'
-          '</g>')
+    d.raw(f'<g clip-path="url(#c)"><image href="{backdrop_uri(slug)}" x="0" y="0" width="{W}" height="{IMG_H}" '
+          f'preserveAspectRatio="xMidYMid slice"/></g>')
     d.raw(f'<rect x=".5" y=".5" width="{W - 1}" height="{H - 1}" rx="17.5" fill="none" stroke="{STROKE}"/>')
-    d.text(24, 38, f"{i:02d}", "mono", 11.5, MUTED)
-    d.text(48, 38, "/ project", "mono", 11.5, MUTED, opacity=.7)
-    # primary link tag (top-right)
+    # primary link tag (top-right of the image)
     tag = "github ↗" if repo else "live demo ↗"
     tw = text_w(tag, "mono-m", 10.5) + 22
-    d.raw(f'<rect x="{W - 22 - tw:.1f}" y="22" width="{tw:.1f}" height="22" rx="11" fill="{acc}" fill-opacity=".14" stroke="{acc}" stroke-opacity=".45"/>')
-    d.text(W - 22 - tw / 2, 37, tag, "mono-m", 10.5, TEXT, anchor="middle")
-    d.text(23, 98, title, "serif", 38, TEXT)
-    d.text(24, 124, short, "sans", 14, TEXT_2)
-    # stack (truncate to width)
+    d.raw(f'<rect x="{W - 16 - tw:.1f}" y="14" width="{tw:.1f}" height="24" rx="12" fill="#0B0A0F" fill-opacity=".72" '
+          f'stroke="{acc}" stroke-opacity=".7"/>')
+    d.text(W - 16 - tw / 2, 30, tag, "mono-m", 10.5, TEXT, anchor="middle")
+    y0 = IMG_H
+    d.text(24, y0 + 28, f"{i:02d}", "mono", 11.5, MUTED)
+    d.text(48, y0 + 28, "/ project", "mono", 11.5, MUTED, opacity=.7)
+    d.text(23, y0 + 66, title, "serif", 34, TEXT)
+    d.text(24, y0 + 88, short, "sans", 13.5, TEXT_2)
     items, line = [s.lower() for s in stack], ""
     for it in items:
         t = (line + " · " + it) if line else it
@@ -328,10 +327,9 @@ def project_card(i, slug, title, short, hue, stack, repo, demo) -> str:
             line += " …"
             break
         line = t
-    d.text(24, 150, line, "mono", 11, MUTED)
-    d.raw(f'<line x1="24" y1="170" x2="{W - 24}" y2="170" stroke="{STROKE}"/>')
-    # link rows: always show both, with a clear fallback
-    y = 194
+    d.text(24, y0 + 110, line, "mono", 11, MUTED)
+    d.raw(f'<line x1="24" y1="{y0 + 124}" x2="{W - 24}" y2="{y0 + 124}" stroke="{STROKE}"/>')
+    y = y0 + 146
     repo_txt = repo.replace("https://github.com/", "") + " ↗" if repo else "not listed"
     demo_txt = re.sub(r"^https?://|/$", "", demo) + " ↗" if demo else "not listed"
     d.text(24, y, "REPO", "mono-m", 9.5, MUTED, tracking=1.2)
