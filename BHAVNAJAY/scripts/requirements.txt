@@ -1,0 +1,6 @@
+pillow
+numpy
+scipy
+fonttools
+brotli
+# optional, only to re-cut the portrait: rembg[cpu]
