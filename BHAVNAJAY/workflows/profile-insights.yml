@@ -1,0 +1,83 @@
+# Regenerates the self-hosted GitHub insight images used in README.md:
+#   profile-3d-contrib/profile-3d-bhavna.svg  – 3D contribution calendar (+ radar & language pie)
+#   profile/stats.svg                         – GitHub stats card
+#   profile/top-langs.svg                     – most-used languages (public repos)
+#   profile/streak.svg                        – contribution streak
+# Uses only the automatic GITHUB_TOKEN (public data). No personal secrets are stored here.
+
+name: Profile insights
+
+on:
+  schedule:
+    - cron: "37 19 * * *" # daily at 19:37 UTC (01:07 IST)
+  workflow_dispatch: # run manually: Actions → Profile insights → Run workflow
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/profile-insights.yml"
+      - ".github/profile-3d-settings.json"
+
+permissions:
+  contents: write # needed to commit the regenerated SVGs back to this repo
+
+concurrency:
+  group: profile-insights
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Each generator is independent: if one service hiccups, the others still update
+      # and the previous image for the failed one stays in place.
+      - name: 3D contribution calendar
+        continue-on-error: true
+        uses: yoshi389111/github-profile-3d-contrib@v0.9.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          USERNAME: ${{ github.repository_owner }}
+          SETTING_JSON: .github/profile-3d-settings.json
+
+      - name: Stats card
+        continue-on-error: true
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: stats
+          options: "username=${{ github.repository_owner }}&show_icons=true&hide_rank=true&card_width=420&custom_title=GitHub%20Stats&bg_color=0B0A0F&title_color=F4F1F8&text_color=B9B3C6&icon_color=A78BFA&hide_border=true&border_radius=16"
+          path: profile/stats.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: "true" # keep the last good card instead of writing an error card
+
+      - name: Top languages card
+        continue-on-error: true
+        uses: stats-organization/github-readme-stats-action@v2
+        with:
+          card: top-langs
+          options: "username=${{ github.repository_owner }}&layout=compact&langs_count=8&size_weight=0.5&count_weight=0.5&card_width=420&custom_title=Most%20Used%20Languages&bg_color=0B0A0F&title_color=F4F1F8&text_color=B9B3C6&hide_border=true&border_radius=16"
+          path: profile/top-langs.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fail_on_error: "true"
+
+      - name: Streak card
+        continue-on-error: true
+        uses: DenverCoder1/github-readme-streak-stats@v1
+        with:
+          options: "user=${{ github.repository_owner }}&background=0B0A0F&hide_border=true&border_radius=16&stroke=2A2533&ring=A78BFA&fire=F0A6CA&currStreakNum=F4F1F8&sideNums=F4F1F8&currStreakLabel=A78BFA&sideLabels=B9B3C6&dates=8E879C&timezone=Asia/Kolkata"
+          path: profile/streak.svg
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit generated images
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          for d in profile profile-3d-contrib; do
+            if [ -d "$d" ]; then git add -A "$d"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "chore: refresh profile insights"
+            git push
+          fi

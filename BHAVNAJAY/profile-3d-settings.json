@@ -1,0 +1,11 @@
+{
+  "type": "normal",
+  "fileName": "profile-3d-bhavna.svg",
+  "backgroundColor": "#0B0A0F",
+  "foregroundColor": "#F4F1F8",
+  "strongColor": "#F0A6CA",
+  "weakColor": "#8E879C",
+  "radarColor": "#A78BFA",
+  "growingAnimation": true,
+  "contribColors": ["#1A1822", "#0E4429", "#006D32", "#26A641", "#39D353"]
+}
