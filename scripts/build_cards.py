@@ -85,9 +85,9 @@ ACHIEVEMENTS = [
      "high-speed data transmission."),
 ]
 
-CONTACT = [
-    ("email", "bhavnajayakumar@gmail.com", "gmail"),
-    ("linkedin", "LinkedIn · bhavna-jayakumar", None),
+CONTACT = [  # (file, side, text shown, logo)
+    ("email", "left", "bhavnajayakumar@gmail.com", "gmail"),
+    ("linkedin", "right", "bhavna-jayakumar", "linkedin"),
 ]
 
 # =============================================================== LOOK
@@ -290,6 +290,34 @@ def pill(label: str, icon: str | None, category: str) -> str:
     return d.render()
 
 
+# =============================================================== contact bar
+def contact_half(side: str, label: str, logo: str) -> str:
+    """One half of the long contact bar (two of these sit edge to edge): white, purple outline."""
+    W, H, r, PURPLE = 400, 64, 18, "#8B6CF0"
+    d = Doc(W, H, label)
+    if side == "left":
+        outline = f"M{W},1 H{r + 1} A{r},{r} 0 0 0 1,{r + 1} V{H - r - 1} A{r},{r} 0 0 0 {r + 1},{H - 1} H{W}"
+        fill = f"M{W},1 H{r + 1} A{r},{r} 0 0 0 1,{r + 1} V{H - r - 1} A{r},{r} 0 0 0 {r + 1},{H - 1} H{W}Z"
+    else:
+        outline = f"M0,1 H{W - r - 1} A{r},{r} 0 0 1 {W - 1},{r + 1} V{H - r - 1} A{r},{r} 0 0 1 {W - r - 1},{H - 1} H0"
+        fill = outline + "Z"
+    d.raw(f'<path d="{fill}" fill="#FFFFFF"/>')
+    d.raw(f'<path d="{outline}" fill="none" stroke="{PURPLE}" stroke-width="1.5"/>')
+    if side == "right":
+        d.raw(f'<line x1="0.75" y1="1" x2="0.75" y2="{H - 1}" stroke="{PURPLE}" stroke-width="1.5"/>')
+    size, icon_sz, gap = 16, 30, 12
+    tw = text_w(label, "sans-m", size)
+    x0 = (W - (icon_sz + gap + tw)) / 2
+    y0 = (H - icon_sz) / 2
+    if logo == "gmail":
+        d.raw(f'<g transform="translate({x0:.1f},{y0}) scale({icon_sz / 24})"><path fill="#EA4335" d="{icon_path("gmail")}"/></g>')
+    else:  # LinkedIn: blue rounded square with a white "in"
+        d.raw(f'<rect x="{x0:.1f}" y="{y0}" width="{icon_sz}" height="{icon_sz}" rx="6" fill="#0A66C2"/>')
+        d.text(x0 + icon_sz / 2, y0 + icon_sz / 2 + 6.5, "in", "sans-m", 18, "#FFFFFF", anchor="middle")
+    d.text(x0 + icon_sz + gap, H / 2 + 5.6, label, "sans-m", size, "#111111")
+    return d.render()
+
+
 # =============================================================== project card
 def backdrop_uri(slug: str) -> str:
     data = (ASSETS / "source" / "backdrops" / f"{slug}.jpg").read_bytes()
@@ -381,8 +409,8 @@ def main():
         write(ASSETS / "projects" / f"{p[0]}.svg", project_card(i, *p)); n += 1
     for slug, svg in achievement_cards().items():
         write(ASSETS / "achievements" / f"{slug}.svg", svg); n += 1
-    for slug, label, icon in CONTACT:
-        write(ASSETS / "contact" / f"{slug}.svg", pill(label, icon, "contact")); n += 1
+    for slug, side, label, logo in CONTACT:
+        write(ASSETS / "contact" / f"{slug}.svg", contact_half(side, label, logo)); n += 1
     print(f"wrote {n} SVG files")
 
 

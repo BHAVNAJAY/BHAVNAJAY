@@ -64,32 +64,6 @@
 
 <br>
 
-### `/ experience`
-
-```text
-●  Full Stack Developer Intern
-│  Finan Consulting
-│  Chennai
-│  Jun 2025 – Aug 2026
-│
-●  Head
-│  CodeKrafters
-│  SRMIST, Chennai
-│  Apr 2025 – Jul 2026
-│
-●  Student Coordinator
-│  National Service Scheme (NSS)
-│  SRMIST, Chennai
-│  Dec 2023 – Sep 2026
-│
-●  Executive Member
-   Computer Society of India (CSI)
-   SRMIST, Chennai
-   Mar 2024 – Mar 2025
-```
-
-<br>
-
 ### `/ projects`
 
 <p align="center">
@@ -114,19 +88,14 @@
   <img src="profile-3d-contrib/profile-3d-bhavna.svg" width="100%" alt="3D contribution calendar for BHAVNAJAY">
 </p>
 
-<sub>Language share is based on code detected in public repositories — it is not a measure of proficiency. Stats, streak and the 3D calendar (which includes the streak card) are regenerated daily by a GitHub Action.</sub>
-
-<br><br>
+<br>
 
 ### `/ currently-exploring`
 
 `RAG` · `LLM Fine-Tuning` · `Agentic AI` · `AI System Architecture` · `Semantic Search` · `Generative AI` · `Computer Vision` · `Intelligent Automation`
 
-<br>
-
 ### `/ contact`
 
 <p>
-  <a href="mailto:bhavnajayakumar@gmail.com"><img src="assets/contact/email.svg" alt="Email: bhavnajayakumar@gmail.com"></a>
-  <a href="https://www.linkedin.com/in/bhavna-jayakumar-934057284/"><img src="assets/contact/linkedin.svg" alt="LinkedIn: bhavna-jayakumar"></a>
+  <a href="mailto:bhavnajayakumar@gmail.com"><img src="assets/contact/email.svg" alt="Email: bhavnajayakumar@gmail.com"></a><a href="https://www.linkedin.com/in/bhavna-jayakumar-934057284/"><img src="assets/contact/linkedin.svg" alt="LinkedIn: bhavna-jayakumar"></a>
 </p>
