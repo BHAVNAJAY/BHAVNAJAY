@@ -31,21 +31,7 @@
   <img src="assets/skills/github.svg" alt="GitHub">
 </p>
 
-<sub><code>02</code>&nbsp; <b>DESIGN &amp; VISUALISATION</b></sub>
-
-<p>
-  <img src="assets/skills/figma.svg" alt="Figma">
-  <img src="assets/skills/canva.svg" alt="Canva">
-  <img src="assets/skills/adobe-illustrator.svg" alt="Adobe Illustrator">
-  <img src="assets/skills/adobe-photoshop.svg" alt="Adobe Photoshop">
-  <img src="assets/skills/blender.svg" alt="Blender">
-  <img src="assets/skills/ui-ux-design.svg" alt="UI/UX Design">
-  <img src="assets/skills/prototyping.svg" alt="Prototyping">
-  <img src="assets/skills/graphic-design.svg" alt="Graphic Design">
-  <img src="assets/skills/branding.svg" alt="Branding">
-</p>
-
-<sub><code>03</code>&nbsp; <b>AI &amp; MACHINE LEARNING</b></sub>
+<sub><code>02</code>&nbsp; <b>AI &amp; MACHINE LEARNING</b></sub>
 
 <p>
   <img src="assets/skills/generative-ai.svg" alt="Generative AI">

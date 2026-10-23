@@ -37,11 +37,6 @@ SKILLS = {
         ("MongoDB", "mongodb"), ("PostgreSQL", "postgresql"), ("Supabase", "supabase"),
         ("REST APIs", None), ("Git", "git"), ("GitHub", "github"),
     ],
-    "design": [
-        ("Figma", "figma"), ("Canva", None), ("Adobe Illustrator", None), ("Adobe Photoshop", None),
-        ("Blender", "blender"), ("UI/UX Design", None), ("Prototyping", None),
-        ("Graphic Design", None), ("Branding", None),
-    ],
     "ai-ml": [
         ("Generative AI", None), ("LLMs", None), ("Prompt Engineering", None), ("RAG", None),
         ("Embeddings", None), ("Agentic AI", None), ("NLP", None), ("Computer Vision", None),
@@ -252,7 +247,30 @@ def slugify(s: str) -> str:
 
 
 # =============================================================== pills
+def pill_light(label: str, icon: str | None, category: str) -> str:
+    """White bubble, large brand logo, small black label (development tools)."""
+    size, key = 13, "sans-m"
+    pad_l, icon_sz, gap, pad_r = 11, 26, 10, 18
+    tw = text_w(label, key, size)
+    pw = pad_l + icon_sz + gap + tw + pad_r
+    W, H, top, ph = pw + 8, 52, 4, 44
+    d = Doc(W, H, label)
+    d.raw(f'<rect x="0.5" y="{top + .5}" width="{pw - 1:.1f}" height="{ph - 1}" rx="{(ph - 1) / 2}" '
+          f'fill="#FFFFFF" stroke="#D9D6E0"/>')
+    iy = top + (ph - icon_sz) / 2
+    s = icon_sz / 24
+    if icon:
+        d.raw(f'<g transform="translate({pad_l},{iy}) scale({s})"><path fill="#{brand_hex(icon)}" d="{icon_path(icon)}"/></g>')
+    else:
+        g = GLYPHS[category].format(c="#5B3FD1")
+        d.raw(f'<g transform="translate({pad_l},{iy}) scale({s})">{g}</g>')
+    d.text(pad_l + icon_sz + gap, top + ph / 2 + 4.6, label, key, size, "#111111")
+    return d.render()
+
+
 def pill(label: str, icon: str | None, category: str) -> str:
+    if category == "development":
+        return pill_light(label, icon, category)
     size, key = 13.5, "sans-m"
     pad_l, icon_sz, gap, pad_r = 13, 16, 9, 15
     tw = text_w(label, key, size)
