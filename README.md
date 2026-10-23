@@ -52,6 +52,19 @@
 
 <br>
 
+### `/ achievements`
+
+<p align="center">
+  <img src="assets/achievements/sih-2025-winner.svg" alt="Smart India Hackathon 2025 — Winner. Built a SaaS platform solution for the Government of Punjab addressing real-world administrative workflows.">
+  <img src="assets/achievements/sih-2025-internal.svg" alt="Smart India Hackathon 2025 — Internal Hackathon Winner. Developed a SaaS platform concept addressing government administrative workflows and real-world public-sector challenges in Punjab.">
+  <img src="assets/achievements/nxtgen-runner-up.svg" alt="NxtGen Hackathon — Runner-Up. Built Netra, an intelligent hospital operations platform designed to improve patient flow, anticipate resource requirements, and support healthcare capacity planning.">
+  <img src="assets/achievements/finan-performance-award.svg" alt="Performance Excellence Award — Finan Consulting. Recognised for performance, ownership, and contributions to SaaS product development during my full-stack development internship.">
+  <img src="assets/achievements/hackverse-25.svg" alt="HackVerse’25 — Organiser &amp; Designer. Organised and designed for a national-level Web3 × AI hackathon, coordinating event execution and creative deliverables for an event with 200+ participants.">
+  <img src="assets/achievements/project-day-2024.svg" alt="Project Day 2024 — Winner. Designed a wireless communication system using LED light waves to demonstrate secure, high-speed data transmission.">
+</p>
+
+<br>
+
 ### `/ experience`
 
 ```text
@@ -75,19 +88,6 @@
    SRMIST, Chennai
    Mar 2024 – Mar 2025
 ```
-
-<br>
-
-### `/ achievements`
-
-<p align="center">
-  <img src="assets/achievements/sih-2025-winner.svg" alt="Smart India Hackathon 2025 — Winner. Built a SaaS platform solution for the Government of Punjab addressing real-world administrative workflows.">
-  <img src="assets/achievements/sih-2025-internal.svg" alt="Smart India Hackathon 2025 — Internal Hackathon Winner. Developed a SaaS platform concept addressing government administrative workflows and real-world public-sector challenges in Punjab.">
-  <img src="assets/achievements/nxtgen-runner-up.svg" alt="NxtGen Hackathon — Runner-Up. Built Netra, an intelligent hospital operations platform designed to improve patient flow, anticipate resource requirements, and support healthcare capacity planning.">
-  <img src="assets/achievements/finan-performance-award.svg" alt="Performance Excellence Award — Finan Consulting. Recognised for performance, ownership, and contributions to SaaS product development during my full-stack development internship.">
-  <img src="assets/achievements/hackverse-25.svg" alt="HackVerse’25 — Organiser &amp; Designer. Organised and designed for a national-level Web3 × AI hackathon, coordinating event execution and creative deliverables for an event with 200+ participants.">
-  <img src="assets/achievements/project-day-2024.svg" alt="Project Day 2024 — Winner. Designed a wireless communication system using LED light waves to demonstrate secure, high-speed data transmission.">
-</p>
 
 <br>
 
