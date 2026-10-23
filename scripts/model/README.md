@@ -6,7 +6,7 @@ Renders `assets/hero/womanfinal.glb` to a sway turntable (PNG frames, transparen
 ```bash
 cd scripts/model
 npm install
-node run.mjs ../../assets/hero/womanfinal.glb ../../assets/source/model-frames 380 560 48 14
+node run.mjs ../../assets/hero/womanfinal.glb ../../assets/source/model-frames 300 430 48 14
 cd ../..
 python3 scripts/build_hero.py
 ```

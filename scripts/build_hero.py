@@ -3,8 +3,8 @@
 
 Inputs : assets/source/model-frames/m000.png ...  sway turntable of assets/hero/womanfinal.glb,
          rendered by scripts/model (see scripts/model/README.md)
-Outputs: assets/hero/hero-3d-v2.gif         - loops: model sways, portfolio bubble pulses
-         assets/hero/hero-3d-v2-static.png  - first frame, used for reduced-motion / fallback
+Outputs: assets/hero/hero-3d-v3.gif         - loops: model sways, portfolio bubble pulses
+         assets/hero/hero-3d-v3-static.png  - first frame, used for reduced-motion / fallback
 
 Requires: Python 3.10+, Pillow, numpy.
 Run from the repository root:  python3 scripts/build_hero.py
@@ -27,15 +27,16 @@ NAME_1 = "BHAVNA"
 NAME_2 = "JAYAKUMAR"
 BUTTON = "VIEW PORTFOLIO"
 BTN_TRACKING = 2.4
-BTN_X, BTN_Y = 72, 430
-MODEL_X, MODEL_Y = 830, 80  # top-left of the 380x560 model render, centred in the arch
+BTN_X, BTN_Y = 72, 410
+MODEL_W, MODEL_H = 300, 430
+MODEL_X, MODEL_Y = 870, 90  # top-left of the model render, centred in the arch
 URL_LABEL = "bhavna-j.vercel.app"
 TOP_LEFT = "~/bhavna-jayakumar"
 TOP_RIGHT = "[ ai · ml · web · design ]"
 KICKER = "// hello, world — i'm"
 
 # ---------------------------------------------------------------- look
-W, H = 1280, 640
+W, H = 1280, 520
 BG = np.array([11, 10, 15], np.float32)
 VIOLET = (167, 139, 250)
 PINK = (240, 166, 202)
@@ -75,9 +76,9 @@ def build_background() -> Image.Image:
     img = np.tile(BG, (H, W, 1))
     v = np.array(VIOLET, np.float32)
     p = np.array(PINK, np.float32)
-    img += radial(1015, 300, 480, 0.20)[..., None] * (v - BG)
-    img += radial(1230, 640, 330, 0.10)[..., None] * (p - BG)
-    img += radial(40, 660, 420, 0.05)[..., None] * (p - BG)
+    img += radial(1015, 260, 420, 0.20)[..., None] * (v - BG)
+    img += radial(1230, 520, 300, 0.10)[..., None] * (p - BG)
+    img += radial(40, 540, 420, 0.05)[..., None] * (p - BG)
     # vignette
     y, x = np.mgrid[0:H, 0:W].astype(np.float32)
     vig = ((x - W / 2) / (W * 0.62)) ** 2 + ((y - H / 2) / (H * 0.75)) ** 2
@@ -87,9 +88,6 @@ def build_background() -> Image.Image:
     grid[24::32, 24::32] = 1
     fade = np.clip(1 - x / 760, 0, 1) * np.clip((y - 90) / 200, 0, 1)
     img += (grid * fade * 14)[..., None]
-    # film grain (fixed seed so every frame shares it -> small GIF deltas)
-    rng = np.random.default_rng(7)
-    img += rng.normal(0, 2.2, (H, W, 1)).astype(np.float32)
     im = Image.fromarray(np.clip(img, 0, 255).astype(np.uint8), "RGB").convert("RGBA")
 
     d = ImageDraw.Draw(im)
@@ -252,13 +250,24 @@ def main():
     models = load_model_frames()
     n = len(models)
     frames = [frame(i, n, base, models) for i in range(n)]
-    frames[0].save(OUT / "hero-3d-v2-static.png", optimize=True)
-    # one shared palette keeps the GIF small; Pillow stores only the changed rectangle per frame
-    pal = frames[n // 4].quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
-    q = [f.quantize(palette=pal, dither=Image.Dither.NONE) for f in frames]
-    q[0].save(OUT / "hero-3d-v2.gif", save_all=True, append_images=q[1:], duration=round(1000 / FPS),
+    frames[0].save(OUT / "hero-3d-v3-static.png", optimize=True)
+    # one shared palette keeps the GIF small. Build it from the whole frame plus close-ups of the
+    # model, so skin and hair tones get enough colours (no banding on the face).
+    sheet = Image.new("RGB", (W, H + MODEL_H * 2))
+    sheet.paste(frames[0], (0, 0))
+    for j, fi in enumerate((0, n // 4, n // 2, 3 * n // 4)):
+        sheet.paste(frames[fi].crop((MODEL_X, MODEL_Y, MODEL_X + MODEL_W, MODEL_Y + MODEL_H)),
+                    (j * MODEL_W, H if j < 4 else H + MODEL_H))
+    pal = sheet.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    box = (MODEL_X, MODEL_Y, MODEL_X + MODEL_W, MODEL_Y + MODEL_H)
+    q = []
+    for f in frames:  # flat text/UI stays clean; only the shaded model gets dithering
+        flat = f.quantize(palette=pal, dither=Image.Dither.NONE)
+        flat.paste(f.quantize(palette=pal, dither=Image.Dither.FLOYDSTEINBERG).crop(box), box)
+        q.append(flat)
+    q[0].save(OUT / "hero-3d-v3.gif", save_all=True, append_images=q[1:], duration=round(1000 / FPS),
               loop=0, optimize=True)
-    for f in ("hero-3d-v2.gif", "hero-3d-v2-static.png"):
+    for f in ("hero-3d-v3.gif", "hero-3d-v3-static.png"):
         print(f, round((OUT / f).stat().st_size / 1024), "KB")
 
 

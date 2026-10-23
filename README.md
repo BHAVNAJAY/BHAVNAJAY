@@ -1,16 +1,10 @@
 <!-- ───────────────────────────── hero ───────────────────────────── -->
 <a href="https://bhavna-j.vercel.app/">
   <picture>
-    <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/BHAVNAJAY/BHAVNAJAY/main/assets/hero/hero-3d-v2-static.png">
-    <img src="assets/hero/hero-3d-v2.gif" width="100%" alt="BHAVNA JAYAKUMAR. A 3D avatar beside a View Portfolio button.">
+    <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/BHAVNAJAY/BHAVNAJAY/main/assets/hero/hero-3d-v3-static.png">
+    <img src="assets/hero/hero-3d-v3.gif" width="100%" alt="BHAVNA JAYAKUMAR. A 3D avatar beside a View Portfolio button.">
   </picture>
 </a>
-
-<br>
-
-### `/ about.txt`
-
-Computer Science Engineering student specialising in AI & ML, passionate about full-stack development, AI-powered solutions, and creative design. [Explore my portfolio](https://bhavna-j.vercel.app/).
 
 <br>
 

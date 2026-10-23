@@ -7,8 +7,8 @@ This folder is the full contents of your profile repository **`BHAVNAJAY/BHAVNAJ
 README.md                         the profile page
 SETUP.md                          this file
 assets/
-  hero/hero-3d-v2.gif                   animated hero (plays once, 2.1 MB)
-  hero/hero-3d-v2-static.png            static hero (reduced-motion fallback)
+  hero/hero-3d-v3.gif                   animated hero (plays once, 2.1 MB)
+  hero/hero-3d-v3-static.png            static hero (reduced-motion fallback)
   source/                         your original portrait + the background-removed cut-out
   skills/  projects/  achievements/  contact/   generated SVG pills and cards
 .github/
@@ -28,7 +28,7 @@ add them by hand.
 1. Open **https://github.com/BHAVNAJAY/BHAVNAJAY**.
 2. Click **Add file → Upload files**.
 3. Drag in **everything inside this folder**: `README.md`, `SETUP.md`, `assets`, `scripts`.
-   Drag folders as folders so the paths stay the same (`assets/hero/hero-3d-v2.gif`, etc.).
+   Drag folders as folders so the paths stay the same (`assets/hero/hero-3d-v3.gif`, etc.).
 4. Commit to **main**. This replaces the default "Hi there 👋" README.
 5. The browser uploader often skips **`.github`** because it's a hidden folder. Add the two
    files by hand:
@@ -92,7 +92,7 @@ git push
   repo count). They are not a measure of skill.
 - **Streak timezone** is set to `Asia/Kolkata`. To change it, edit `timezone=` in the workflow.
 - **Hero animation** plays once and then rests on the full frame. Visitors with "reduce
-  motion" turned on see `hero-3d-v2-static.png` instead. To make it loop, change `"-loop", "-1"` to
+  motion" turned on see `hero-3d-v3-static.png` instead. To make it loop, change `"-loop", "-1"` to
   `"-loop", "0"` in `scripts/build_hero.py` and rebuild.
 
 ## 4. Editing content later
@@ -103,7 +103,7 @@ Text in the hero lives at the top of **`scripts/build_hero.py`**. To regenerate:
 ```bash
 pip install -r scripts/requirements.txt      # Pillow, numpy, scipy, fonttools, brotli
 python3 scripts/build_cards.py               # skill pills, project & achievement cards, contact
-python3 scripts/build_hero.py                # hero-3d-v2.gif + hero-3d-v2-static.png (needs ffmpeg; gifsicle optional)
+python3 scripts/build_hero.py                # hero-3d-v3.gif + hero-3d-v3-static.png (needs ffmpeg; gifsicle optional)
 ```
 
 Experience, about, currently-exploring and contact links are plain text in `README.md`.
@@ -118,6 +118,6 @@ To add a project link later (for example a repo for Ping), set the repo URL in `
 | Insight images show as broken right after publishing | The workflow hasn't run yet. Run it from the Actions tab and wait for the commit. |
 | Workflow fails at `git push` with 403 | Settings → Actions → General → Workflow permissions → **Read and write**. |
 | `profile-3d-bhavna.svg` missing but other cards exist | Open the run log for the "3D contribution calendar" step. Check that `.github/profile-3d-settings.json` was uploaded. |
-| Hero or cards broken | Check the folder structure. Paths are case-sensitive (`assets/hero/hero-3d-v2.gif`). |
+| Hero or cards broken | Check the folder structure. Paths are case-sensitive (`assets/hero/hero-3d-v3.gif`). |
 | Activity graph broken | That's the external service. Wait and refresh, or delete that `<p>` block from `README.md`. |
 | Changes don't show | GitHub caches images for a few minutes. Hard-refresh the page. |
