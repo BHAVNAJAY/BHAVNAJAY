@@ -3,8 +3,8 @@
 
 Inputs : assets/source/model-frames/m000.png ...  sway turntable of assets/hero/womanfinal.glb,
          rendered by scripts/model (see scripts/model/README.md)
-Outputs: assets/hero/hero-3d-v3.gif         - loops: model sways, portfolio bubble pulses
-         assets/hero/hero-3d-v3-static.png  - first frame, used for reduced-motion / fallback
+Outputs: assets/hero/hero-3d-v4.webp         - loops: model sways, portfolio bubble pulses
+         assets/hero/hero-3d-v4-static.png  - first frame, used for reduced-motion / fallback
 
 Requires: Python 3.10+, Pillow, numpy.
 Run from the repository root:  python3 scripts/build_hero.py
@@ -250,24 +250,11 @@ def main():
     models = load_model_frames()
     n = len(models)
     frames = [frame(i, n, base, models) for i in range(n)]
-    frames[0].save(OUT / "hero-3d-v3-static.png", optimize=True)
-    # one shared palette keeps the GIF small. Build it from the whole frame plus close-ups of the
-    # model, so skin and hair tones get enough colours (no banding on the face).
-    sheet = Image.new("RGB", (W, H + MODEL_H * 2))
-    sheet.paste(frames[0], (0, 0))
-    for j, fi in enumerate((0, n // 4, n // 2, 3 * n // 4)):
-        sheet.paste(frames[fi].crop((MODEL_X, MODEL_Y, MODEL_X + MODEL_W, MODEL_Y + MODEL_H)),
-                    (j * MODEL_W, H if j < 4 else H + MODEL_H))
-    pal = sheet.quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
-    box = (MODEL_X, MODEL_Y, MODEL_X + MODEL_W, MODEL_Y + MODEL_H)
-    q = []
-    for f in frames:  # flat text/UI stays clean; only the shaded model gets dithering
-        flat = f.quantize(palette=pal, dither=Image.Dither.NONE)
-        flat.paste(f.quantize(palette=pal, dither=Image.Dither.FLOYDSTEINBERG).crop(box), box)
-        q.append(flat)
-    q[0].save(OUT / "hero-3d-v3.gif", save_all=True, append_images=q[1:], duration=round(1000 / FPS),
-              loop=0, optimize=True)
-    for f in ("hero-3d-v3.gif", "hero-3d-v3-static.png"):
+    frames[0].save(OUT / "hero-3d-v4-static.png", optimize=True)
+    # Animated WebP keeps full 24-bit colour (a GIF would squeeze the model into 256 colours).
+    frames[0].save(OUT / "hero-3d-v4.webp", save_all=True, append_images=frames[1:],
+                   duration=round(1000 / FPS), loop=0, lossless=True, quality=90, method=4)
+    for f in ("hero-3d-v4.webp", "hero-3d-v4-static.png"):
         print(f, round((OUT / f).stat().st_size / 1024), "KB")
 
 
