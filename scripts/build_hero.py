@@ -1,37 +1,34 @@
 #!/usr/bin/env python3
-"""Build the animated hero banner (GIF) and its static fallback (PNG).
+"""Build the animated hero banner (looping GIF) and its static fallback (PNG).
 
-Inputs : assets/source/bhavna-portrait-cutout.png  (cut-out of the original photo;
-         the face and body pixels are untouched — only the white background removed)
-Outputs: assets/hero/hero.gif         – plays once: portrait wipe-reveal + subtle zoom, type fades in
-         assets/hero/hero-static.png  – final frame, used for reduced-motion / fallback
+Inputs : assets/source/model-frames/m000.png ...  sway turntable of assets/hero/womanfinal.glb,
+         rendered by scripts/model (see scripts/model/README.md)
+Outputs: assets/hero/hero.gif         - loops: model sways, portfolio bubble pulses
+         assets/hero/hero-static.png  - first frame, used for reduced-motion / fallback
 
-Requires: Python 3.10+, Pillow, numpy, scipy, ffmpeg on PATH.
+Requires: Python 3.10+, Pillow, numpy.
 Run from the repository root:  python3 scripts/build_hero.py
 """
 from __future__ import annotations
 
-import shutil
-import subprocess
-import tempfile
+import math
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageFilter, ImageFont
+from PIL import Image, ImageChops, ImageDraw, ImageFilter, ImageFont
 
 ROOT = Path(__file__).resolve().parents[1]
 FONTS = ROOT / "scripts" / "fonts"
-SRC = ROOT / "assets" / "source" / "bhavna-portrait-cutout.png"
+MODEL_DIR = ROOT / "assets" / "source" / "model-frames"
 OUT = ROOT / "assets" / "hero"
 
 # ---------------------------------------------------------------- content
 NAME_1 = "BHAVNA"
 NAME_2 = "JAYAKUMAR"
-TAGLINE = "Logic Runs from A to Z, Creativity Knows No Limits."
-ABOUT = ("I'm a Computer Science Engineering student specialising in AI & Machine Learning. "
-         "I build web applications, experiment with AI-powered solutions, and design "
-         "intuitive, visually engaging interfaces.")
 BUTTON = "VIEW PORTFOLIO"
+BTN_TRACKING = 2.4
+BTN_X, BTN_Y = 72, 430
+MODEL_X, MODEL_Y = 830, 80  # top-left of the 380x560 model render, centred in the arch
 URL_LABEL = "bhavna-j.vercel.app"
 TOP_LEFT = "~/bhavna-jayakumar"
 TOP_RIGHT = "[ ai · ml · web · design ]"
@@ -44,8 +41,7 @@ VIOLET = (167, 139, 250)
 PINK = (240, 166, 202)
 TEXT = (244, 241, 248)
 MUTED = (160, 154, 174)
-FPS = 20
-DURATION = 2.3  # seconds of motion; the GIF then rests on the last frame
+FPS = 16
 
 
 def font(name: str, size: float) -> ImageFont.FreeTypeFont:
@@ -129,34 +125,6 @@ def build_arch() -> Image.Image:
     return layer
 
 
-# ---------------------------------------------------------------- portrait
-def build_portrait() -> tuple[Image.Image, Image.Image]:
-    """Return (portrait RGBA, glow RGBA) at canvas scale, unpositioned."""
-    cut = Image.open(SRC).convert("RGBA")
-    a = np.asarray(cut)[..., 3]
-    rows = np.where(a.max(axis=1) > 20)[0]
-    top = int(rows[0])
-    cut = cut.crop((0, max(top - 10, 0), cut.width, cut.height))
-    target_h = H - 112
-    s = target_h / cut.height
-    cut = cut.resize((round(cut.width * s), target_h), Image.LANCZOS)
-    # soften the photo's hard side/bottom crop edges so it melts into the dark
-    arr = np.asarray(cut).astype(np.float32)
-    h, w = arr.shape[:2]
-    x = np.arange(w)[None, :]
-    y = np.arange(h)[:, None]
-    side = np.clip(np.minimum(x, w - 1 - x) / 70.0, 0, 1)
-    side = np.where(y < h * 0.45, 1.0, side)  # only fade sides where arms meet the frame
-    bottom = np.clip((h - 1 - y) / 70.0, 0, 1) * 0.55 + 0.45
-    arr[..., 3] *= side * bottom
-    portrait = Image.fromarray(arr.astype(np.uint8), "RGBA")
-    # rim glow from the silhouette
-    sil = portrait.getchannel("A").filter(ImageFilter.GaussianBlur(18))
-    glow = Image.new("RGBA", portrait.size, VIOLET + (0,))
-    glow.putalpha(sil.point(lambda v: int(v * 0.55)))
-    return portrait, glow
-
-
 # ---------------------------------------------------------------- text layers
 def text_layer(draw_fn) -> Image.Image:
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
@@ -191,146 +159,105 @@ def wrap(text, fnt, max_w):
     return lines
 
 
-def build_text_layers():
-    X = 72
-    y = 104
-    layers = []  # (layer, start, end, slide_px)
+def button_geometry():
+    d = ImageDraw.Draw(Image.new("L", (1, 1)))
+    f = F_SANS_SB(16)
+    tw = sum(d.textlength(ch, font=f) for ch in BUTTON) + BTN_TRACKING * (len(BUTTON) - 1)
+    return int(tw + 22 + 68), 58
 
-    kicker = text_layer(lambda d, l: d.text((X, y), KICKER, font=F_MONO(15), fill=VIOLET + (255,)))
-    layers.append((kicker, 0.35, 0.95, 10))
 
+def build_static_text():
+    """Everything that never moves: kicker + name. The portfolio button is drawn per frame."""
+    X, y = 72, 104
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    d.text((X, y), KICKER, font=F_MONO(15), fill=VIOLET + (255,))
     name_size = 124
     y_n1 = y + 18
-    n1 = text_layer(lambda d, l: d.text((X - 4, y_n1), NAME_1, font=F_SERIF(name_size), fill=TEXT + (255,)))
-    layers.append((n1, 0.50, 1.30, 22))
-    y_n2 = y_n1 + 104
-    n2 = text_layer(lambda d, l: gradient_text(l, (X - 2, y_n2), NAME_2, F_SERIF_I(name_size)))
-    layers.append((n2, 0.68, 1.48, 22))
+    d.text((X - 4, y_n1), NAME_1, font=F_SERIF(name_size), fill=TEXT + (255,))
+    gradient_text(layer, (X - 2, y_n1 + 104), NAME_2, F_SERIF_I(name_size))
+    return layer
 
-    y_tag = y_n2 + 150
-    tag = text_layer(lambda d, l: d.text((X, y_tag), TAGLINE, font=F_SERIF_I(29), fill=(232, 228, 240, 255)))
-    layers.append((tag, 1.00, 1.70, 12))
 
-    y_desc = y_tag + 50
-    fd = F_SANS(16)
-    lines = wrap(ABOUT, fd, 590)
-
-    def draw_desc(d, l):
-        for i, ln in enumerate(lines):
-            d.text((X, y_desc + i * 26), ln, font=fd, fill=MUTED + (255,))
-    desc = text_layer(draw_desc)
-    layers.append((desc, 1.20, 1.90, 10))
-
-    y_btn = y_desc + len(lines) * 26 + 26
-
-    def draw_btn(d, l):
-        f = F_SANS_SB(14)
-        label = BUTTON
-        tracking = 2.2
-        tw = sum(d.textlength(ch, font=f) for ch in label) + tracking * (len(label) - 1)
-        arrow_w = 22
-        bw, bh = int(tw + arrow_w + 56), 50
-        # soft glow under the button
-        glow = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-        gd = ImageDraw.Draw(glow)
-        gd.rounded_rectangle([X + 6, y_btn + 10, X + bw - 6, y_btn + bh + 6], radius=25, fill=VIOLET + (120,))
-        glow = glow.filter(ImageFilter.GaussianBlur(14))
-        l.alpha_composite(glow)
-        d.rounded_rectangle([X, y_btn, X + bw, y_btn + bh], radius=bh // 2, fill=TEXT + (255,))
-        cx = X + 28
-        ty = y_btn + bh / 2
-        for ch in label:
-            d.text((cx, ty), ch, font=f, fill=(14, 12, 20, 255), anchor="lm")
-            cx += d.textlength(ch, font=f) + tracking
-        d.text((cx + 8, ty), "↗", font=F_SANS_SB(16), fill=(120, 92, 220, 255), anchor="lm")
-        d.text((X + bw + 22, ty), URL_LABEL, font=F_MONO(13), fill=MUTED + (255,), anchor="lm")
-    btn = text_layer(draw_btn)
-    layers.append((btn, 1.45, 2.15, 10))
-    return layers
+def draw_button(k: float):
+    """Animated portfolio bubble for loop position k in [0, 1). Returns (RGBA tile, (x, y))."""
+    bw, bh = button_geometry()
+    pad = 70
+    ox, oy = BTN_X - pad, BTN_Y - pad
+    tw_, th_ = bw + 2 * pad + 230, bh + 2 * pad
+    tile = Image.new("RGBA", (tw_, th_), (0, 0, 0, 0))
+    bx, by = pad, pad
+    pulse = 0.5 + 0.5 * math.sin(2 * math.pi * k)
+    # breathing glow
+    glow = Image.new("RGBA", tile.size, (0, 0, 0, 0))
+    ImageDraw.Draw(glow).rounded_rectangle([bx + 6, by + 10, bx + bw - 6, by + bh + 6], radius=bh // 2,
+                                            fill=VIOLET + (int(90 + 90 * pulse),))
+    tile.alpha_composite(glow.filter(ImageFilter.GaussianBlur(16)))
+    # expanding ripple ring
+    e = 30 * k
+    ring = Image.new("RGBA", tile.size, (0, 0, 0, 0))
+    ImageDraw.Draw(ring).rounded_rectangle([bx - e, by - e, bx + bw + e, by + bh + e], radius=int(bh // 2 + e),
+                                            outline=PINK + (int(170 * (1 - k) ** 1.5),), width=2)
+    tile.alpha_composite(ring)
+    # button body
+    body = Image.new("RGBA", tile.size, (0, 0, 0, 0))
+    bd = ImageDraw.Draw(body)
+    bd.rounded_rectangle([bx, by, bx + bw, by + bh], radius=bh // 2, fill=TEXT + (255,))
+    f = F_SANS_SB(16)
+    cx, ty = bx + 34, by + bh / 2
+    for ch in BUTTON:
+        bd.text((cx, ty), ch, font=f, fill=(14, 12, 20, 255), anchor="lm")
+        cx += bd.textlength(ch, font=f) + BTN_TRACKING
+    bd.text((cx + 8 + 3 * math.sin(2 * math.pi * k), ty), "↗", font=F_SANS_SB(19),
+            fill=(120, 92, 220, 255), anchor="lm")
+    # shimmer sweep, clipped to the bubble
+    s = (k - 0.25) / 0.5
+    if 0 <= s <= 1:
+        sh = Image.new("RGBA", tile.size, (0, 0, 0, 0))
+        sx = bx - 60 + s * (bw + 120)
+        ImageDraw.Draw(sh).polygon([(sx, by), (sx + 34, by), (sx + 14, by + bh), (sx - 20, by + bh)],
+                                   fill=(167, 139, 250, 120))
+        clip = Image.new("L", tile.size, 0)
+        ImageDraw.Draw(clip).rounded_rectangle([bx, by, bx + bw, by + bh], radius=bh // 2, fill=255)
+        sh.putalpha(ImageChops.multiply(sh.getchannel("A"), clip))
+        body.alpha_composite(sh)
+    tile.alpha_composite(body)
+    ImageDraw.Draw(tile).text((bx + bw + 24, by + bh / 2), URL_LABEL, font=F_MONO(13),
+                              fill=MUTED + (255,), anchor="lm")
+    return tile, (ox, oy)
 
 
 # ---------------------------------------------------------------- compose
-def fade_layer(layer: Image.Image, alpha: float) -> Image.Image:
-    if alpha >= 0.999:
-        return layer
-    a = layer.getchannel("A").point(lambda v: int(v * alpha))
-    out = layer.copy()
-    out.putalpha(a)
-    return out
+def load_model_frames():
+    files = sorted(MODEL_DIR.glob("m*.png"))
+    if not files:
+        raise SystemExit(f"No model frames in {MODEL_DIR}. Render them first (see scripts/model/README.md).")
+    return [Image.open(f).convert("RGBA") for f in files]
 
 
-def frame(t, bg, arch, portrait, glow, layers) -> Image.Image:
-    im = bg.copy()
-    # arch
-    im.alpha_composite(fade_layer(arch, phase(t, 0.0, 0.9)))
-    # portrait: subtle zoom 1.06 -> 1.0, bottom-anchored, plus upward wipe reveal
-    z = 1.05 - 0.05 * phase(t, 0.0, 1.6)
-    pw, ph = portrait.size
-    sw, sh = round(pw * z), round(ph * z)
-    p = portrait.resize((sw, sh), Image.LANCZOS) if z != 1 else portrait
-    g = glow.resize((sw, sh), Image.LANCZOS) if z != 1 else glow
-    cx = 1020
-    px, py = cx - sw // 2, H - sh
-    reveal = phase(t, 0.0, 1.6)
-    edge = H - reveal * (H + 80)  # wipe line moves from bottom to above the top
-    yy = np.arange(sh)[:, None] + py
-    wipe = np.clip((yy - edge) / 80.0, 0, 1)
-    fade = phase(t, 0.0, 1.0)
-
-    def masked(src):
-        arr = np.asarray(src).astype(np.float32)
-        arr[..., 3] *= wipe * fade
-        return Image.fromarray(arr.astype(np.uint8), "RGBA")
-    pl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    pl.alpha_composite(masked(g), (px - 6, py), (max(0, -(px - 6)), 0))
-    im.alpha_composite(pl)
-    pl = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    src = masked(p)
-    if px < 0:
-        src = src.crop((-px, 0, sw, sh))
-        px = 0
-    pl.alpha_composite(src, (px, py))
-    im.alpha_composite(pl)
-    # text
-    for layer, s, e, slide in layers:
-        k = phase(t, s, e)
-        if k <= 0:
-            continue
-        lay = fade_layer(layer, k)
-        dy = round((1 - k) * slide)
-        if dy:
-            shifted = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-            shifted.alpha_composite(lay, (0, dy), (0, 0, W, H - dy))
-            lay = shifted
-        im.alpha_composite(lay)
+def frame(i, n, base, model_frames) -> Image.Image:
+    im = base.copy()
+    m = model_frames[i % len(model_frames)]
+    im.alpha_composite(m, (MODEL_X, MODEL_Y))
+    tile, pos = draw_button(i / n)
+    im.alpha_composite(tile, pos)
     return im.convert("RGB")
 
 
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
-    bg = build_background()
-    arch = build_arch()
-    portrait, glow = build_portrait()
-    layers = build_text_layers()
-    n = int(DURATION * FPS)
-    tmp = Path(tempfile.mkdtemp())
-    for i in range(n + 1):
-        t = i / FPS
-        frame(t, bg, arch, portrait, glow, layers).save(tmp / f"f{i:03d}.png")
-    final = frame(99, bg, arch, portrait, glow, layers)
-    final.save(OUT / "hero-static.png", optimize=True)
-    # GIF: shared palette, only changed rectangles re-encoded, plays once (-loop -1)
-    subprocess.run([
-        "ffmpeg", "-y", "-loglevel", "error", "-framerate", str(FPS), "-i", str(tmp / "f%03d.png"),
-        "-vf", "split[a][b];[a]palettegen=max_colors=256:stats_mode=full[p];"
-               "[b][p]paletteuse=dither=sierra2_4a:diff_mode=rectangle",
-        "-loop", "-1", "-final_delay", "500", str(OUT / "hero.gif"),
-    ], check=True)
-    shutil.rmtree(tmp)
-    # optional: shrink with gifsicle (≈40% smaller, quality stays close to the source)
-    gifsicle = shutil.which("gifsicle")
-    if gifsicle:
-        subprocess.run([gifsicle, "-O3", "--lossy=30", "-b", str(OUT / "hero.gif")], check=True)
+    base = build_background()
+    base.alpha_composite(build_arch())
+    base.alpha_composite(build_static_text())
+    models = load_model_frames()
+    n = len(models)
+    frames = [frame(i, n, base, models) for i in range(n)]
+    frames[0].save(OUT / "hero-static.png", optimize=True)
+    # one shared palette keeps the GIF small; Pillow stores only the changed rectangle per frame
+    pal = frames[n // 4].quantize(256, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE)
+    q = [f.quantize(palette=pal, dither=Image.Dither.NONE) for f in frames]
+    q[0].save(OUT / "hero.gif", save_all=True, append_images=q[1:], duration=round(1000 / FPS),
+              loop=0, optimize=True)
     for f in ("hero.gif", "hero-static.png"):
         print(f, round((OUT / f).stat().st_size / 1024), "KB")
 

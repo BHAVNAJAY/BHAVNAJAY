@@ -2,7 +2,7 @@
 <a href="https://bhavna-j.vercel.app/">
   <picture>
     <source media="(prefers-reduced-motion: reduce)" srcset="https://raw.githubusercontent.com/BHAVNAJAY/BHAVNAJAY/main/assets/hero/hero-static.png">
-    <img src="assets/hero/hero.gif" width="100%" alt="BHAVNA JAYAKUMAR. Logic Runs from A to Z, Creativity Knows No Limits. I'm a Computer Science Engineering student specialising in AI &amp; Machine Learning. I build web applications, experiment with AI-powered solutions, and design intuitive, visually engaging interfaces. View portfolio.">
+    <img src="assets/hero/hero.gif" width="100%" alt="BHAVNA JAYAKUMAR. A 3D avatar beside a View Portfolio button.">
   </picture>
 </a>
 
