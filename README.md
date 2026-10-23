@@ -100,16 +100,11 @@
   <a href="https://github.com/BHAVNAJAY/Netra"><img src="assets/projects/netra.svg" alt="Netra — Intelligent Healthcare Operations. Repository: github.com/BHAVNAJAY/Netra. Live demo: not listed."></a>
   <a href="https://github.com/BHAVNAJAY/Eco-Learn"><img src="assets/projects/ecolearn.svg" alt="EcoLearn — Gamified Sustainability Education. Repository: github.com/BHAVNAJAY/Eco-Learn. Live demo: not listed."></a>
   <a href="https://notify-yh0m.onrender.com/"><img src="assets/projects/notify.svg" alt="Notify — Secure Notes &amp; Organization. Live demo: notify-yh0m.onrender.com. Repository: not listed."></a>
-  <a href="https://structifybybhavna.netlify.app/"><img src="assets/projects/structify.svg" alt="Structify — Graph Analysis &amp; Validation. Live demo: structifybybhavna.netlify.app. Repository: not listed."></a>
 </p>
 
 <br>
 
 ### `/ github-insights`
-
-<p align="center">
-  <img src="https://github-readme-activity-graph.vercel.app/graph?username=BHAVNAJAY&bg_color=0B0A0F&color=B9B3C6&title_color=F4F1F8&line=39D353&point=F0A6CA&area=true&area_color=26A641&hide_border=true&radius=16&custom_title=Contribution%20activity" width="100%" alt="Contribution activity graph for BHAVNAJAY">
-</p>
 
 <p align="center">
   <img src="profile/stats.svg" alt="GitHub stats for BHAVNAJAY">

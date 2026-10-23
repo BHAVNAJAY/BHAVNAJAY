@@ -85,9 +85,8 @@ git push
 
 ## 3. Things to know
 
-- **External widget:** only the *contribution activity graph* is loaded live from a
-  third-party service (`github-readme-activity-graph.vercel.app`). If that service is down,
-  only that one image breaks. Everything else lives in your repo.
+- **No external widgets:** every image on the page lives in this repo. The old third-party activity graph was
+  removed after its host started returning HTTP 402.
 - **Language percentages** come from code detected in your public repositories (by bytes and
   repo count). They are not a measure of skill.
 - **Streak timezone** is set to `Asia/Kolkata`. To change it, edit `timezone=` in the workflow.
@@ -119,5 +118,4 @@ To add a project link later (for example a repo for Ping), set the repo URL in `
 | Workflow fails at `git push` with 403 | Settings → Actions → General → Workflow permissions → **Read and write**. |
 | `profile-3d-bhavna.svg` missing but other cards exist | Open the run log for the "3D contribution calendar" step. Check that `.github/profile-3d-settings.json` was uploaded. |
 | Hero or cards broken | Check the folder structure. Paths are case-sensitive (`assets/hero/hero-3d-v4.webp`). |
-| Activity graph broken | That's the external service. Wait and refresh, or delete that `<p>` block from `README.md`. |
 | Changes don't show | GitHub caches images for a few minutes. Hard-refresh the page. |

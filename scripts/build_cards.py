@@ -65,9 +65,6 @@ PROJECTS = [
     ("notify", "Notify", "Secure Notes & Organization", 210,
      ["React", "Node.js", "Express.js", "MongoDB", "Google OAuth"],
      None, "https://notify-yh0m.onrender.com/"),
-    ("structify", "Structify", "Graph Analysis & Validation", 36,
-     ["React", "Node.js", "REST APIs", "Graph Algorithms"],
-     None, "https://structifybybhavna.netlify.app/"),
 ]
 
 ACHIEVEMENTS = [
