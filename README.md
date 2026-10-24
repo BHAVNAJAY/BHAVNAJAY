@@ -69,7 +69,9 @@
   <img src="assets/projects/projects-flow.webp" width="100%" alt="Projects: SatQuery AI, Ping, iReady, Netra, EcoLearn and Notify, scrolling past on a curved strip">
 </p>
 
-<p align="center"><sub><a href="https://github.com/BHAVNAJAY/SatQueryAI">SatQuery AI</a> · <a href="https://ping-ecru-nu.vercel.app/">Ping</a> · <a href="https://i-ready-alpha.vercel.app/">iReady</a> · <a href="https://github.com/BHAVNAJAY/Netra">Netra</a> · <a href="https://github.com/BHAVNAJAY/Eco-Learn">EcoLearn</a> · <a href="https://notify-yh0m.onrender.com/">Notify</a></sub></p>
+<p align="center">
+  <a href="https://github.com/BHAVNAJAY/SatQueryAI"><img src="assets/projects/btn-satquery-ai.svg" alt="SatQuery AI"></a><a href="https://notify-yh0m.onrender.com/"><img src="assets/projects/btn-notify.svg" alt="Notify"></a><a href="https://ping-ecru-nu.vercel.app/"><img src="assets/projects/btn-ping.svg" alt="Ping"></a><a href="https://github.com/BHAVNAJAY/Netra"><img src="assets/projects/btn-netra.svg" alt="Netra"></a><a href="https://i-ready-alpha.vercel.app/"><img src="assets/projects/btn-iready.svg" alt="iReady"></a><a href="https://github.com/BHAVNAJAY/Eco-Learn"><img src="assets/projects/btn-ecolearn.svg" alt="EcoLearn"></a><a href="https://structifybybhavna.netlify.app/"><img src="assets/projects/btn-structify.svg" alt="Structify"></a>
+</p>
 
 <br>
 

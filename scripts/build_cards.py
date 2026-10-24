@@ -287,6 +287,30 @@ def pill(label: str, icon: str | None, category: str) -> str:
     return d.render()
 
 
+# =============================================================== project buttons
+# (file, label, background, text colour, link)
+PROJECT_BUTTONS = [
+    ("satquery-ai", "SatQuery AI", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/SatQueryAI"),
+    ("notify", "Notify", "#A9D8FF", "#111111", "https://notify-yh0m.onrender.com/"),
+    ("ping", "Ping", "#C2185B", "#FFFFFF", "https://ping-ecru-nu.vercel.app/"),
+    ("netra", "Netra", "#A6EBD8", "#111111", "https://github.com/BHAVNAJAY/Netra"),
+    ("iready", "iReady", "#CFE4FF", "#111111", "https://i-ready-alpha.vercel.app/"),
+    ("ecolearn", "EcoLearn", "#B8EDB0", "#111111", "https://github.com/BHAVNAJAY/Eco-Learn"),
+    ("structify", "Structify", "#7C4DFF", "#FFFFFF", "https://structifybybhavna.netlify.app/"),
+]
+
+
+def project_button(label: str, bg: str, fg: str) -> str:
+    size, key, pad = 15, "sans-m", 26
+    text = f"{label} ↗"
+    tw = text_w(text, key, size)
+    bw, bh = tw + 2 * pad, 44
+    d = Doc(bw + 10, bh + 10, label)
+    d.raw(f'<rect x="0" y="2" width="{bw:.1f}" height="{bh}" rx="{bh / 2}" fill="{bg}"/>')
+    d.text(bw / 2, 2 + bh / 2 + 5.3, text, key, size, fg, anchor="middle")
+    return d.render()
+
+
 # =============================================================== contact bar
 def contact_half(side: str, label: str, logo: str) -> str:
     """One half of the long contact bar (two of these sit edge to edge): white, purple outline."""
@@ -404,6 +428,8 @@ def main():
             write(ASSETS / "skills" / f"{slugify(label)}.svg", pill(label, icon, cat)); n += 1
     for slug, svg in achievement_cards().items():
         write(ASSETS / "achievements" / f"{slug}.svg", svg); n += 1
+    for slug, label, bg, fg, _ in PROJECT_BUTTONS:
+        write(ASSETS / "projects" / f"btn-{slug}.svg", project_button(label, bg, fg)); n += 1
     for slug, side, label, logo in CONTACT:
         write(ASSETS / "contact" / f"{slug}.svg", contact_half(side, label, logo)); n += 1
     print(f"wrote {n} SVG files")
