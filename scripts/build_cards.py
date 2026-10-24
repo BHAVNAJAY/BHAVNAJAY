@@ -429,7 +429,7 @@ def main():
     for slug, svg in achievement_cards().items():
         write(ASSETS / "achievements" / f"{slug}.svg", svg); n += 1
     for slug, label, bg, fg, _ in PROJECT_BUTTONS:
-        write(ASSETS / "projects" / f"btn-{slug}.svg", project_button(label, bg, fg)); n += 1
+        write(ASSETS / "projects" / f"link-{slug}.svg", project_button(label, bg, fg)); n += 1
     for slug, side, label, logo in CONTACT:
         write(ASSETS / "contact" / f"{slug}.svg", contact_half(side, label, logo)); n += 1
     print(f"wrote {n} SVG files")
