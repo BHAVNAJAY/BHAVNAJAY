@@ -291,23 +291,23 @@ def pill(label: str, icon: str | None, category: str) -> str:
 # (file, label, background, text colour, link)
 PROJECT_BUTTONS = [
     ("satquery-ai", "SatQuery AI", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/SatQueryAI"),
-    ("notify", "Notify", "#A9D8FF", "#111111", "https://notify-yh0m.onrender.com/"),
-    ("ping", "Ping", "#C2185B", "#FFFFFF", "https://ping-ecru-nu.vercel.app/"),
-    ("netra", "Netra", "#A6EBD8", "#111111", "https://github.com/BHAVNAJAY/Netra"),
-    ("iready", "iReady", "#CFE4FF", "#111111", "https://i-ready-alpha.vercel.app/"),
-    ("ecolearn", "EcoLearn", "#B8EDB0", "#111111", "https://github.com/BHAVNAJAY/Eco-Learn"),
-    ("structify", "Structify", "#7C4DFF", "#FFFFFF", "https://structifybybhavna.netlify.app/"),
+    ("notify", "Notify", "#1E3A8A", "#FFFFFF", "https://notify-yh0m.onrender.com/"),
+    ("ping", "Ping", "#1E3A8A", "#FFFFFF", "https://ping-ecru-nu.vercel.app/"),
+    ("netra", "Netra", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/Netra"),
+    ("iready", "iReady", "#1E3A8A", "#FFFFFF", "https://i-ready-alpha.vercel.app/"),
+    ("ecolearn", "EcoLearn", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/Eco-Learn"),
+    ("structify", "Structify", "#1E3A8A", "#FFFFFF", "https://structifybybhavna.netlify.app/"),
 ]
 
 
 def project_button(label: str, bg: str, fg: str) -> str:
-    size, key, pad = 15, "sans-m", 26
+    size, key, pad = 14, "sans-m", 17
     text = f"{label} ↗"
     tw = text_w(text, key, size)
-    bw, bh = tw + 2 * pad, 44
-    d = Doc(bw + 10, bh + 10, label)
+    bw, bh = tw + 2 * pad, 40
+    d = Doc(bw + 8, bh + 8, label)
     d.raw(f'<rect x="0" y="2" width="{bw:.1f}" height="{bh}" rx="{bh / 2}" fill="{bg}"/>')
-    d.text(bw / 2, 2 + bh / 2 + 5.3, text, key, size, fg, anchor="middle")
+    d.text(bw / 2, 2 + bh / 2 + 5, text, key, size, fg, anchor="middle")
     return d.render()
 
 
