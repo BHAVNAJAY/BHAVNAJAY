@@ -290,13 +290,13 @@ def pill(label: str, icon: str | None, category: str) -> str:
 # =============================================================== project buttons
 # (file, label, background, text colour, link)
 PROJECT_BUTTONS = [
-    ("satquery-ai", "SatQuery AI", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/SatQueryAI"),
-    ("notify", "Notify", "#1E3A8A", "#FFFFFF", "https://notify-yh0m.onrender.com/"),
-    ("ping", "Ping", "#1E3A8A", "#FFFFFF", "https://ping-ecru-nu.vercel.app/"),
-    ("netra", "Netra", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/Netra"),
-    ("iready", "iReady", "#1E3A8A", "#FFFFFF", "https://i-ready-alpha.vercel.app/"),
-    ("ecolearn", "EcoLearn", "#1E3A8A", "#FFFFFF", "https://github.com/BHAVNAJAY/Eco-Learn"),
-    ("structify", "Structify", "#1E3A8A", "#FFFFFF", "https://structifybybhavna.netlify.app/"),
+    ("satquery-ai", "SatQuery AI", "#4C1D95", "#FFFFFF", "https://github.com/BHAVNAJAY/SatQueryAI"),
+    ("notify", "Notify", "#4C1D95", "#FFFFFF", "https://notify-yh0m.onrender.com/"),
+    ("ping", "Ping", "#4C1D95", "#FFFFFF", "https://ping-ecru-nu.vercel.app/"),
+    ("netra", "Netra", "#4C1D95", "#FFFFFF", "https://github.com/BHAVNAJAY/Netra"),
+    ("iready", "iReady", "#4C1D95", "#FFFFFF", "https://i-ready-alpha.vercel.app/"),
+    ("ecolearn", "EcoLearn", "#4C1D95", "#FFFFFF", "https://github.com/BHAVNAJAY/Eco-Learn"),
+    ("structify", "Structify", "#4C1D95", "#FFFFFF", "https://structifybybhavna.netlify.app/"),
 ]
 
 
@@ -429,7 +429,7 @@ def main():
     for slug, svg in achievement_cards().items():
         write(ASSETS / "achievements" / f"{slug}.svg", svg); n += 1
     for slug, label, bg, fg, _ in PROJECT_BUTTONS:
-        write(ASSETS / "projects" / f"link-{slug}.svg", project_button(label, bg, fg)); n += 1
+        write(ASSETS / "projects" / f"violet-{slug}.svg", project_button(label, bg, fg)); n += 1
     for slug, side, label, logo in CONTACT:
         write(ASSETS / "contact" / f"{slug}.svg", contact_half(side, label, logo)); n += 1
     print(f"wrote {n} SVG files")

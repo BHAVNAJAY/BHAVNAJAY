@@ -70,7 +70,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/BHAVNAJAY/SatQueryAI"><img src="assets/projects/link-satquery-ai.svg" alt="SatQuery AI"></a><a href="https://notify-yh0m.onrender.com/"><img src="assets/projects/link-notify.svg" alt="Notify"></a><a href="https://ping-ecru-nu.vercel.app/"><img src="assets/projects/link-ping.svg" alt="Ping"></a><a href="https://github.com/BHAVNAJAY/Netra"><img src="assets/projects/link-netra.svg" alt="Netra"></a><a href="https://i-ready-alpha.vercel.app/"><img src="assets/projects/link-iready.svg" alt="iReady"></a><a href="https://github.com/BHAVNAJAY/Eco-Learn"><img src="assets/projects/link-ecolearn.svg" alt="EcoLearn"></a><a href="https://structifybybhavna.netlify.app/"><img src="assets/projects/link-structify.svg" alt="Structify"></a>
+  <a href="https://github.com/BHAVNAJAY/SatQueryAI"><img src="assets/projects/violet-satquery-ai.svg" alt="SatQuery AI"></a><a href="https://notify-yh0m.onrender.com/"><img src="assets/projects/violet-notify.svg" alt="Notify"></a><a href="https://ping-ecru-nu.vercel.app/"><img src="assets/projects/violet-ping.svg" alt="Ping"></a><a href="https://github.com/BHAVNAJAY/Netra"><img src="assets/projects/violet-netra.svg" alt="Netra"></a><a href="https://i-ready-alpha.vercel.app/"><img src="assets/projects/violet-iready.svg" alt="iReady"></a><a href="https://github.com/BHAVNAJAY/Eco-Learn"><img src="assets/projects/violet-ecolearn.svg" alt="EcoLearn"></a><a href="https://structifybybhavna.netlify.app/"><img src="assets/projects/violet-structify.svg" alt="Structify"></a>
 </p>
 
 <br>
